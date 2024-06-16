@@ -36,7 +36,7 @@ public class OtpService {
     public ResponseEntity<String> generateOtp(GenerateOtpRequest generateOtpRequest) {
 
         SignupRequest signupRequest = userDetailsRepository.findByEmail(generateOtpRequest.getEmail());
-        if (signupRequest == null || signupRequest.getAccountDetail().isActive()) {
+        if (signupRequest == null || signupRequest.getAccountSettings().isActive()) {
             if (signupRequest == null) {
                 return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
             } else {
@@ -93,8 +93,8 @@ public class OtpService {
 
         if (verifyOtp(verifyOtp.getEmail(), verifyOtp.getOtp())) {
             SignupRequest user = userDetailsRepository.findByEmail(verifyOtp.getEmail());
-            user.getAccountDetail().setActive(true);
-            user.getAccountDetail().setVerified(true);
+            user.getAccountSettings().setActive(true);
+            user.getAccountSettings().setVerified(true);
             userDetailsRepository.save(user);
             String message = "Account Activated Successfully";
             genericService.sendOtpMail(

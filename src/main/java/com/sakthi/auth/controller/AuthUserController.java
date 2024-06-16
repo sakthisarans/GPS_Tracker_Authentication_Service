@@ -14,6 +14,7 @@ import com.sakthi.auth.service.SignupService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,19 +35,12 @@ public class AuthUserController {
         return signinService.signin(signinRequest);
     }
 
-    @PostMapping("/generateotp")
+    @PostMapping("/accountverify/generateotp")
     public ResponseEntity<String> generateOTP(@Valid @RequestBody GenerateOtpRequest otpRequest){
         return generateOtpService.generateOtp(otpRequest);
     }
-    @PostMapping("/verifyotp")
+    @PostMapping("/accountverify/verifyotp")
     public ResponseEntity<String> verifyOTP(@Valid @RequestBody VerifyOtp verifyOtp){
         return generateOtpService.verifyEmailOtp(verifyOtp);
     }
-
-
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @PostMapping("/test")
-//    public ResponseEntity<?> test( ){
-//        return ResponseEntity.ok("hello");
-//    }
 }

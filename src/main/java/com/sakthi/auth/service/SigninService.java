@@ -4,6 +4,7 @@ import com.sakthi.auth.customException.BannedUserException;
 import com.sakthi.auth.customException.UserNotActivatedException;
 import com.sakthi.auth.model.signin.SigninRequest;
 import com.sakthi.auth.model.signin.SigninResponse;
+import com.sakthi.auth.model.signout.SignoutRequest;
 import com.sakthi.auth.model.token.TokenInfo;
 import com.sakthi.auth.repository.TokenValidationRepository;
 import com.sakthi.auth.repository.UserDetailsRepository;
@@ -41,7 +42,7 @@ public class SigninService {
     TokenValidationRepository tokenValidationRepository;
 
     @Value("${jwt.token.jwtExpirationMs}")
-    private int jwtExpirationMs;
+    private long jwtExpirationMs;
 
 
     public ResponseEntity<SigninResponse> signin(SigninRequest signinRequest) throws UserNotActivatedException, BannedUserException {
@@ -65,11 +66,24 @@ public class SigninService {
                 isActive(true).isUserCreated(false).
                 message("System Created").loginDevice(signinRequest.getLoginDevice())
                 .build();
+            if(userDetails.getAccountSettings().is2AEnabled()){
+                tokenInfo.setActive(false);
+            }
             tokenValidationRepository.save(tokenInfo);
             return ResponseEntity.ok(new SigninResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles));
+                roles,userDetails.getAccountSettings().is2AEnabled()));
+    }
+    public ResponseEntity<String> signout(SignoutRequest token){
+        TokenInfo tokenInfo=tokenValidationRepository.findByToken(token.getToken());
+        if(tokenInfo!=null) {
+            tokenInfo.setActive(false);
+            tokenValidationRepository.save(tokenInfo);
+            return ResponseEntity.ok("Logout Successfully");
+        }else{
+            return new ResponseEntity<>("",HttpStatus.NOT_FOUND);
+        }
     }
 }

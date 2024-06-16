@@ -1,6 +1,5 @@
 package com.sakthi.auth.model.signup;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sakthi.auth.model.jwt.Role;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -40,5 +39,5 @@ public class SignupRequest {
     @DBRef
     private Set<Role> roles = new HashSet<>();
     private List<String> roleList;
-    private Account accountDetail;
+    private Account accountSettings;
 }

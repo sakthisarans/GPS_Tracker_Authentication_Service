@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.sakthi.auth.model.signin.SigninRequest;
 import com.sakthi.auth.model.signup.Account;
 import com.sakthi.auth.model.signup.SignupRequest;
 import lombok.Getter;
@@ -29,7 +28,7 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
     @Getter
-    private Account accountDetail;
+    private Account accountSettings;
 
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -40,7 +39,7 @@ public class UserDetailsImpl implements UserDetails {
         this.email = email;
         this.password = password;
         this.authorities = authorities;
-        this.accountDetail=accountDetail;
+        this.accountSettings=accountDetail;
     }
 
     public static UserDetailsImpl build(SignupRequest user) {
@@ -53,7 +52,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUserName(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getAccountDetail(),
+                user.getAccountSettings(),
                 authorities);
     }
 

@@ -5,6 +5,7 @@ import com.sakthi.auth.model.jwt.Role;
 import com.sakthi.auth.model.signup.SignupRequest;
 import com.sakthi.auth.model.signup.Account;
 import com.sakthi.auth.model.signup.SignupResponse;
+import com.sakthi.auth.model.verification.GenerateOtpRequest;
 import com.sakthi.auth.repository.RoleRepository;
 import com.sakthi.auth.repository.UserDetailsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -63,9 +64,8 @@ public class SignupService {
                 });
             }
             signupRequest.setDateOfCreation(new Date());
-            signupRequest.setAccountDetail(Account.builder().isBanned(false).isActive(false).is2AEnabled(false).isVerified(false).build());
+            signupRequest.setAccountSettings(Account.builder().isBanned(false).isActive(false).is2AEnabled(false).isVerified(false).build());
             signupRequest.setRoles((roles));
-
             userDetailsRepository.save(signupRequest);
             return new ResponseEntity<>(SignupResponse.builder().message("User Created Successful").build(), HttpStatus.CREATED);
         }else {

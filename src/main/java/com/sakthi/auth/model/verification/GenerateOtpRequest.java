@@ -1,6 +1,7 @@
 package com.sakthi.auth.model.verification;
 
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

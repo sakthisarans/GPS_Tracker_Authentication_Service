@@ -19,11 +19,14 @@ public class SigninResponse {
     @JsonIgnore
     private List<String> roles;
 
-    public SigninResponse(String accessToken, String id, String username, String email, List<String> roles) {
+    private boolean is2FAEnabled;
+
+    public SigninResponse(String accessToken, String id, String username, String email, List<String> roles,boolean is2FAEnabled) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
+        this.is2FAEnabled=is2FAEnabled;
     }
 }

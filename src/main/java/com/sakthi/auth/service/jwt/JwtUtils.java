@@ -3,11 +3,14 @@ package com.sakthi.auth.service.jwt;
 
 import com.sakthi.auth.customException.BannedUserException;
 import com.sakthi.auth.customException.UserNotActivatedException;
+import com.sakthi.auth.model.token.TokenInfo;
+import com.sakthi.auth.repository.TokenValidationRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -21,15 +24,16 @@ public class JwtUtils {
 
     @Value("${jwt.token.jwtSecret}")
     private String jwtSecret;
+    @Autowired
+    TokenValidationRepository tokenValidationRepository;
 
-
-    public String generateJwtToken(Authentication authentication, int expiryTime) throws UserNotActivatedException, BannedUserException {
+    public String generateJwtToken(Authentication authentication, long expiryTime) throws UserNotActivatedException, BannedUserException {
 
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
-        if (!userPrincipal.getAccountDetail().isActive()) {
+        if (!userPrincipal.getAccountSettings().isActive()) {
             throw new UserNotActivatedException("User Is Not Activated Yet");
-        } else if (userPrincipal.getAccountDetail().isBanned()) {
+        } else if (userPrincipal.getAccountSettings().isBanned()) {
             throw new BannedUserException("User Is Banned");
         }
 
@@ -54,7 +58,13 @@ public class JwtUtils {
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
-            logger.debug(Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken).toString());
+            TokenInfo tokenInfo=tokenValidationRepository.findByToken(authToken);
+            if(tokenInfo==null){
+                throw new MalformedJwtException("Token Not Found");
+            } else if (!tokenInfo.isActive()) {
+                throw new MalformedJwtException("Token Is Deactivated");
+            }
+            logger.debug("token is"+Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken).toString());
             return true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
@@ -65,7 +75,6 @@ public class JwtUtils {
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
-
         return false;
     }
 }
