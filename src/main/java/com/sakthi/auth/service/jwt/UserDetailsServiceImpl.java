@@ -1,7 +1,5 @@
 package com.sakthi.auth.service.jwt;
 
-import com.sakthi.auth.customException.UserNotActivatedException;
-import com.sakthi.auth.model.signup.Account;
 import com.sakthi.auth.model.signup.SignupRequest;
 import com.sakthi.auth.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;

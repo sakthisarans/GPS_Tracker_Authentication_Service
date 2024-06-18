@@ -1,6 +1,5 @@
 package com.sakthi.auth.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.sakthi.auth.model.signin.SigninRequest;
 import com.sakthi.auth.model.signout.SignoutRequest;
 import com.sakthi.auth.model.token.TokenInfo;

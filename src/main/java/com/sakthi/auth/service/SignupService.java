@@ -5,7 +5,6 @@ import com.sakthi.auth.model.jwt.Role;
 import com.sakthi.auth.model.signup.SignupRequest;
 import com.sakthi.auth.model.signup.Account;
 import com.sakthi.auth.model.signup.SignupResponse;
-import com.sakthi.auth.model.verification.GenerateOtpRequest;
 import com.sakthi.auth.repository.RoleRepository;
 import com.sakthi.auth.repository.UserDetailsRepository;
 import lombok.extern.slf4j.Slf4j;

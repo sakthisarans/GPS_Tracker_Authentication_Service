@@ -1,9 +1,7 @@
 package com.sakthi.auth.service.generic;
 
 import com.sakthi.auth.model.mail.OtpRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
