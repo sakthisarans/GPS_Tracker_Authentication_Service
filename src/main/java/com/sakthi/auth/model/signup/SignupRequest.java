@@ -34,7 +34,7 @@ public class SignupRequest {
     private String contact;
     private AdditionalInfo additionalInfo;
     private Address address;
-    @NotEmpty(message = "Trackers must contain data")
+//    @NotEmpty(message = "Trackers must contain data")
     private List<Tracker> trackerList;
     @DBRef
     private Set<Role> roles = new HashSet<>();

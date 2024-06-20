@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tracker {
-    @Pattern(regexp = "[0-9]{1,19}$",message = "Invalid Tracker ID")
+    @Pattern(regexp = "^[a-zA-Z0-9]+-[0-9]{1,20}$",message = "Invalid Tracker ID")
     private String trackerID;
     private String VehicleNumber;
 }

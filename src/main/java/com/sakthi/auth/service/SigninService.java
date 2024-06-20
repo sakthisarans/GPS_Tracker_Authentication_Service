@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 import java.util.List;
 
 @Service
-@Slf4j
 public class SigninService {
 
     @Autowired
@@ -90,13 +89,11 @@ public class SigninService {
     public ResponseEntity<List<TokenInfo>> getToken(boolean userCreatedTokens){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
-        log.debug("email"+ user.getEmail());
         List<TokenInfo> tokenInfos=tokenValidationRepository.findByEmail(user.getEmail());
 
 
 
         return new ResponseEntity<>(tokenInfos.stream().filter(obj->{
-            log.debug(String.valueOf(userCreatedTokens && obj.isUserCreated())+" "+userCreatedTokens+" "+obj.isUserCreated());
             return userCreatedTokens == obj.isUserCreated();
         }).collect(Collectors.toList()),HttpStatus.OK);
     }
@@ -104,12 +101,10 @@ public class SigninService {
 
 
     public ResponseEntity<String> signoutAll(SigninRequest signoutAllRequest){
-        log.debug(signoutAllRequest.getEmail()+" "+signoutAllRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signoutAllRequest.getEmail(), signoutAllRequest.getPassword()));
 
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
-        log.debug("email"+ user.getEmail());
         List<TokenInfo> tokenInfos=tokenValidationRepository.findByEmail(user.getEmail());
         tokenInfos.forEach(x->{
             x.setActive(false);
