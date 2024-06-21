@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trackerauth
+spec:
+  selector:
+    matchLabels:
+      app: trackerauth
+  template:
+    metadata:
+      labels:
+        app: trackerauth
+    spec:
+      containers:
+      - name: trackerauth
+        image: sakthisaran/tracker_auth:BUILDNUMBER
+        env:
+        - name: AUTH_SERVICE_GENERICSERVICE_URL
+          value: http://trackergeneric:80/
+
+        - name: AUTH_SERVICE_MONGO_URL
+          valueFrom:
+            secretKeyRef:
+              name: secretpasswords
+              key: AUTH_SERVICE_MONGO_URL
+
+        - name: AUTH_SERVICE_MONGO_PORT
+          valueFrom:
+            secretKeyRef:
+              name: secretpasswords
+              key: AUTH_SERVICE_MONGO_PORT
+
+        - name: AUTH_SERVICE_MONGO_DB
+          valueFrom:
+            secretKeyRef:
+              name: secretpasswords
+              key: AUTH_SERVICE_MONGO_DB
+
+        - name: AUTH_SERVICE_MONGO_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: secretpasswords
+              key: AUTH_SERVICE_MONGO_USERNAME
+        
+        - name: AUTH_SERVICE_MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secretpasswords
+              key: AUTH_SERVICE_MONGO_PASSWORD
+        
+        - name: AUTH_SERVICE_REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: secretpasswords
+              key: AUTH_SERVICE_REDIS_URL
+
+        - name: AUTH_SERVICE_REDIS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: secretpasswords
+              key: AUTH_SERVICE_REDIS_PORT
+              
+
+        resources:
+          limits:
+            memory: "300Mi"
+            cpu: "300m"
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: trackerauthservice
+spec:
+  type: ClusterIP
+  selector:
+    app: trackerauth
+  ports:
+  - port: 80
+    targetPort: 80
+
