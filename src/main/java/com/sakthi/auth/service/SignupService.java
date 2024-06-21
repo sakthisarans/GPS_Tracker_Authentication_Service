@@ -32,29 +32,27 @@ public class SignupService {
     @Autowired
     RegisterClientRepository registerClientRepository;
 
-    public ResponseEntity<SignupResponse> signup(SignupRequest signupRequest){
-        if(!signupRequest.getTrackerList().isEmpty()){
-            RegisterClientRequest tracker=registerClientRepository.findByTrackerid(signupRequest.getTrackerList().get(0).getTrackerID());
-            if(signupRequest.getTrackerList().size()>1){
-                return new ResponseEntity<>(null,HttpStatus.TOO_MANY_REQUESTS);
+    public ResponseEntity<SignupResponse> signup(SignupRequest signupRequest) {
+        if (userDetailsRepository.findByEmail(signupRequest.getEmail()) == null) {
+            if (!signupRequest.getTrackerList().isEmpty()) {
+                RegisterClientRequest tracker = registerClientRepository.findByTrackerid(signupRequest.getTrackerList().get(0).getTrackerID());
+                if (signupRequest.getTrackerList().size() > 1) {
+                    return new ResponseEntity<>(null, HttpStatus.TOO_MANY_REQUESTS);
+                } else if (tracker == null) {
+                    return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+                } else if (tracker.isActive()) {
+                    return new ResponseEntity<>(null, HttpStatus.ALREADY_REPORTED);
+                } else {
+                    clientService.activateTracker(signupRequest.getTrackerList().get(0).getTrackerID());
+                }
+            } else {
+                if (!signupRequest.getRoleList().contains("tracker")) {
+                    return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+                } else {
+                    signupRequest.setTrackerList(new ArrayList<>());
+                }
             }
-            else if(tracker==null) {
-                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            }
-            else if(tracker.isActive()){
-                return new ResponseEntity<>(null,HttpStatus.ALREADY_REPORTED);
-            }
-            else {
-                clientService.activateTracker(signupRequest.getTrackerList().get(0).getTrackerID());
-            }
-        }else{
-            if(!signupRequest.getRoleList().contains("tracker")) {
-                return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
-            }else {
-                signupRequest.setTrackerList(new ArrayList<>());
-            }
-        }
-        if(userDetailsRepository.findByEmail(signupRequest.getEmail())==null) {
+
 
             signupRequest.setPassword(encoder.encode(signupRequest.getPassword()));
             List<String> strRoles = signupRequest.getRoleList();
@@ -91,7 +89,7 @@ public class SignupService {
             signupRequest.setRoles((roles));
             userDetailsRepository.save(signupRequest);
             return new ResponseEntity<>(SignupResponse.builder().message("User Created Successful").build(), HttpStatus.CREATED);
-        }else {
+        } else {
             return new ResponseEntity<>(SignupResponse.builder().message("User Already Exists").build(), HttpStatus.FOUND);
         }
     }
