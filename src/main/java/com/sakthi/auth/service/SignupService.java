@@ -43,7 +43,7 @@ public class SignupService {
                 } else if (tracker.isActive()) {
                     return new ResponseEntity<>(null, HttpStatus.ALREADY_REPORTED);
                 } else {
-                    clientService.activateTracker(signupRequest.getTrackerList().get(0).getTrackerID());
+                    clientService.activateTracker(signupRequest.getTrackerList().get(0).getTrackerID(),signupRequest);
                 }
             } else {
                 if (!signupRequest.getRoleList().contains("tracker")) {
