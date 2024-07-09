@@ -31,9 +31,4 @@ public class UserController {
     public ResponseEntity<String> signoutAll(@Valid @RequestBody SigninRequest signoutAllRequest){
         return signinService.signoutAll(signoutAllRequest);
     }
-
-    @GetMapping("/test")
-    public String test(){
-        return "OK";
-    }
 }
