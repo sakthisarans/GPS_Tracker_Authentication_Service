@@ -1,9 +1,11 @@
 package com.sakthi.auth.controller;
 
+import com.sakthi.auth.model.AuthVerify;
 import com.sakthi.auth.model.signin.SigninRequest;
 import com.sakthi.auth.model.signout.SignoutRequest;
 import com.sakthi.auth.model.token.TokenInfo;
 import com.sakthi.auth.service.SigninService;
+import com.sakthi.auth.service.ValidateTokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ public class UserController {
     @Autowired
     SigninService signinService;
 
+    @Autowired
+    ValidateTokenService validateTokenService;
+    
     @PostMapping("/signout")
     public ResponseEntity<String> signout(@Valid @RequestBody SignoutRequest token){
         return signinService.signout(token);
@@ -30,5 +35,10 @@ public class UserController {
     @DeleteMapping("/signoutall")
     public ResponseEntity<String> signoutAll(@Valid @RequestBody SigninRequest signoutAllRequest){
         return signinService.signoutAll(signoutAllRequest);
+    }
+
+    @GetMapping("/validateToken")
+    public ResponseEntity<AuthVerify> validateToken(){
+        return validateTokenService.getDataFromToken();
     }
 }

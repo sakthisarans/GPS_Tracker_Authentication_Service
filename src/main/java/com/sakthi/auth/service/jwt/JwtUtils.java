@@ -40,7 +40,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject((userPrincipal.getEmail()))
                 .setIssuedAt(new Date())
-//                .claim("authorities", "test")
+//                .claim("authorities", "test") add additional data to jwt token
                 .setExpiration(new Date((new Date()).getTime() + expiryTime))
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
