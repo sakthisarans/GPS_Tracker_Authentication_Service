@@ -31,7 +31,7 @@ public class ClientService {
         if(validate!=null && validate.isActive()){
             return new ResponseEntity<>(VerificationResponse.builder().isSuper(validate.isSuper()).result("allow").build(), HttpStatus.OK);
         }else {
-            return new ResponseEntity<>(VerificationResponse.builder().isSuper(validate.isSuper()).result("block").build(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(VerificationResponse.builder().isSuper(false).result("block").build(),HttpStatus.NOT_FOUND);
         }
     }
     public void activateTracker(String id, SignupRequest signupRequest){

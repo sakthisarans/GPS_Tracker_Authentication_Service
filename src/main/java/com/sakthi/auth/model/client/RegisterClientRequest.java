@@ -18,6 +18,7 @@ public class RegisterClientRequest {
     private String trackerID;
     @NotBlank
     private String trackerPassword;
+    private boolean isOnline=false;
     private boolean isActive=false;
     private boolean isSuper=false;
     private List<ClientAuthenticatedUsers> users;
