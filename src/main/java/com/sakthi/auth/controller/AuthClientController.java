@@ -1,8 +1,6 @@
 package com.sakthi.auth.controller;
 
-import com.sakthi.auth.model.client.RegisterClientRequest;
-import com.sakthi.auth.model.client.VerificationRequest;
-import com.sakthi.auth.model.client.VerificationResponse;
+import com.sakthi.auth.model.client.*;
 import com.sakthi.auth.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,11 @@ public class AuthClientController {
     public ResponseEntity<VerificationResponse> verify(@Valid @RequestBody VerificationRequest verificationRequest){
         return clientService.verifyClirnt(verificationRequest);
     }
+    @PostMapping("/authorize")
+    public ResponseEntity<AuthorizeClientResponse> authorize(@RequestBody AuthorizeClientRequest authorizeClient){
+        return clientService.authorize(authorizeClient);
+    }
+
     @PostMapping("/registerClient")
     public ResponseEntity<RegisterClientRequest> register(@Valid @RequestBody RegisterClientRequest registerClientRequest){
         return clientService.registerClient(registerClientRequest);
