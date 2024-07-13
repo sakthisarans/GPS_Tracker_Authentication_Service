@@ -54,18 +54,16 @@ public class ClientService {
         try{
             ObjectMapper obj=new ObjectMapper();
             log.debug(obj.writeValueAsString(authorizeClient));
-        }catch (Exception ex){
-
-        }
+        }catch (Exception ignored){}
         if(Objects.equals(authorizeClient.getAction(), "subscribe")){
-            if(authorizeClient.getTopic().contains(authorizeClient.getTrackerId())){
+            if(authorizeClient.getTopic().contains("/tracker/"+authorizeClient.getTrackerId())){
                 return new ResponseEntity<>(new AuthorizeClientResponse("allow"),HttpStatus.OK);
             }
             else{
                 return new ResponseEntity<>(new AuthorizeClientResponse("deny"),HttpStatus.OK);
             }
         } else if (Objects.equals(authorizeClient.getAction(), "publish")) {
-            if(authorizeClient.getTopic().contains(authorizeClient.getTrackerId())){
+            if(authorizeClient.getTopic().contains("/tracker/"+authorizeClient.getTrackerId())){
                 return new ResponseEntity<>(new AuthorizeClientResponse("allow"),HttpStatus.OK);
             }
             else{
