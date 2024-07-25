@@ -21,6 +21,24 @@ spec:
               name: secretpasswords
               key: AUTH_JWT_SIGNATURE_SECRET
 
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+            secretKeyRef:
+              name: secretpasswords
+              key: SPRING_PROFILE
+
+        - name: MONGO_UNAME
+          valueFrom:
+            secretKeyRef:
+              name: secretpasswords
+              key: MONGO_UNAME
+
+        - name: MONGO_PWD
+          valueFrom:
+            secretKeyRef:
+              name: secretpasswords
+              key: MONGO_PWD
+
         resources:
           limits:
             memory: "300Mi"
