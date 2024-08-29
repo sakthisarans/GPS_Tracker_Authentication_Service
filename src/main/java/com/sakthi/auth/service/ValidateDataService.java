@@ -27,7 +27,7 @@ public class ValidateDataService {
                     return new ResponseEntity<>(new ValidateDataResponse(false), HttpStatus.OK);
                 }
             }else{
-                return new ResponseEntity<>(new ValidateDataResponse(false), HttpStatus.OK);
+                return new ResponseEntity<>(new ValidateDataResponse(true), HttpStatus.OK);
             }
         } else if (content.equals("trackerid")) {
             RegisterClientRequest data=registerClientRepository.findByTrackerid(value);
@@ -38,7 +38,7 @@ public class ValidateDataService {
                     return new ResponseEntity<>(new ValidateDataResponse(false), HttpStatus.OK);
                 }
             }else{
-                return new ResponseEntity<>(new ValidateDataResponse(false), HttpStatus.OK);
+                return new ResponseEntity<>(new ValidateDataResponse(true), HttpStatus.OK);
             }
         }else{
             return new ResponseEntity<>(new ValidateDataResponse(false), HttpStatus.BAD_REQUEST);
