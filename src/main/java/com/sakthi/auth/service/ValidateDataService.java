@@ -38,7 +38,7 @@ public class ValidateDataService {
                     return new ResponseEntity<>(new ValidateDataResponse(false), HttpStatus.OK);
                 }
             }else{
-                return new ResponseEntity<>(new ValidateDataResponse(true), HttpStatus.OK);
+                return new ResponseEntity<>(new ValidateDataResponse(false), HttpStatus.OK);
             }
         }else{
             return new ResponseEntity<>(new ValidateDataResponse(false), HttpStatus.BAD_REQUEST);
